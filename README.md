@@ -1,0 +1,4 @@
+# AddonDeployer
+
+X operationsの自作アドオンをまとめてXOPSのaddonフォルダに移動するためのソフトウェア
+
