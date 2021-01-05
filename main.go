@@ -86,7 +86,8 @@ func main() {
 	for _, dir := range dirs {
 		err := deployAddon(filepath.Join(dir, "addon"), dstDir)
 		if err != nil {
-			panic(err)
+			fmt.Printf("処理をスキップします。 %v\n", dir)
+			continue
 		}
 	}
 
