@@ -8,13 +8,13 @@ X operationsの自作アドオンをまとめてaddonフォルダに移動する
 # 使い方
 
 ```
-deploy.exe (アーカイブのフォルダ) (X operationsのaddonフォルダ)
+deployer.exe (アーカイブのフォルダ) (X operationsのaddonフォルダ)
 ```
 
 例
 
 ```
-deploy.exe ./Archive ./addon
+deployer.exe ./Archive ./addon
 ```
 
 # プログラム情報
