@@ -1,4 +1,4 @@
-# AddonDeployer
+# Addon Deployer
 
 X operationsの自作アドオンをまとめてaddonフォルダに移動するためのソフトウェア
 
