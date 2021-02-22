@@ -58,69 +58,29 @@ func deployAddon(inputRootDir string, outputRootDir string) error {
 	return nil
 }
 
-func main() {
-	var inputRootDir string
-	var outputRootDir string
-	var bHelp bool
-	var bVersion bool
-	app := &cli.App{
-		Name:    "Addon Deployer",
-		Version: "v1.0.0",
-
-		Flags: []cli.Flag{
-			&cli.StringFlag{
-				Name:        "inputRootDir",
-				Aliases:     []string{"i"},
-				Usage:       "Input root directory",
-				Destination: &inputRootDir,
-			},
-			&cli.StringFlag{
-				Name:        "outputRootDir",
-				Aliases:     []string{"o"},
-				Usage:       "Output root directory",
-				Destination: &outputRootDir,
-			},
-		},
-	}
-	cli.HelpFlag = &cli.BoolFlag{
-		Name:        "help",
-		Aliases:     []string{"h"},
-		Usage:       "Displays help",
-		Destination: &bHelp,
-	}
-	cli.VersionFlag = &cli.BoolFlag{
-		Name:        "version",
-		Aliases:     []string{"v"},
-		Usage:       "Displays version",
-		Destination: &bVersion,
-	}
-
-	if err := app.Run(os.Args); err != nil {
-		panic(err)
-	}
-
-	if bHelp || bVersion {
-		return
-	}
+func appAction(c *cli.Context) error {
+	inputRootDir := c.String("inputRootDir")
+	outputRootDir := c.String("outputRootDir")
 
 	if inputRootDir == "" {
 		fmt.Println("エラー: 入力ディレクトリを指定してください")
-		return
+		return nil
 	}
 	if outputRootDir == "" {
 		fmt.Println("エラー: 出力ディレクトリを指定してください")
-		return
+		return nil
 	}
 
 	//すでにoutputRootDirが示すディレクトリ内に何かファイルが存在する場合にはプログラムを終了する
 	fileExists, err := anyFileExists(outputRootDir)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	if fileExists {
 		errMessage := fmt.Sprintf("エラー: %v にはすでにファイルが存在します", outputRootDir)
 		fmt.Fprintln(os.Stderr, errMessage)
-		return
+
+		return nil
 	}
 
 	subdirs, err := enumerateDirectories(inputRootDir)
@@ -137,4 +97,32 @@ func main() {
 	}
 
 	fmt.Println("アドオンの配備が完了しました")
+
+	return nil
+}
+
+func main() {
+	app := &cli.App{
+		Name:    "Addon Deployer",
+		Version: "v1.0.0",
+
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:    "inputRootDir",
+				Aliases: []string{"i"},
+				Usage:   "Input root directory",
+			},
+			&cli.StringFlag{
+				Name:    "outputRootDir",
+				Aliases: []string{"o"},
+				Usage:   "Output root directory",
+			},
+		},
+
+		Action: appAction,
+	}
+
+	if err := app.Run(os.Args); err != nil {
+		panic(err)
+	}
 }
