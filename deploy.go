@@ -110,12 +110,12 @@ func main() {
 			&cli.StringFlag{
 				Name:    "input-root-dirname",
 				Aliases: []string{"i"},
-				Usage:   "Input root directory",
+				Usage:   "Name of the input root directory",
 			},
 			&cli.StringFlag{
 				Name:    "output-root-dirname",
 				Aliases: []string{"o"},
-				Usage:   "Output root directory",
+				Usage:   "Name of the output root directory",
 			},
 		},
 
