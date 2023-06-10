@@ -59,37 +59,37 @@ func deployAddon(inputRootDir string, outputRootDir string) error {
 }
 
 func appAction(c *cli.Context) error {
-	inputRootDir := c.String("inputRootDir")
-	outputRootDir := c.String("outputRootDir")
+	inputRootDirname := c.String("input-root-dirname")
+	outputRootDirname := c.String("output-root-dirname")
 
-	if inputRootDir == "" {
+	if inputRootDirname == "" {
 		fmt.Println("エラー: 入力ディレクトリを指定してください")
 		return nil
 	}
-	if outputRootDir == "" {
+	if outputRootDirname == "" {
 		fmt.Println("エラー: 出力ディレクトリを指定してください")
 		return nil
 	}
 
 	//すでにoutputRootDirが示すディレクトリ内に何かファイルが存在する場合にはプログラムを終了する
-	fileExists, err := anyFileExists(outputRootDir)
+	fileExists, err := anyFileExists(outputRootDirname)
 	if err != nil {
 		return err
 	}
 	if fileExists {
-		errMessage := fmt.Sprintf("エラー: %v にはすでにファイルが存在します", outputRootDir)
+		errMessage := fmt.Sprintf("エラー: %v にはすでにファイルが存在します", outputRootDirname)
 		fmt.Fprintln(os.Stderr, errMessage)
 
 		return nil
 	}
 
-	subdirs, err := enumerateDirectories(inputRootDir)
+	subdirs, err := enumerateDirectories(inputRootDirname)
 	if err != nil {
 		panic(err)
 	}
 
 	for _, subdir := range subdirs {
-		err := deployAddon(filepath.Join(subdir, "addon"), outputRootDir)
+		err := deployAddon(filepath.Join(subdir, "addon"), outputRootDirname)
 		if err != nil {
 			fmt.Printf("処理をスキップします %v\n", subdir)
 			continue
@@ -104,16 +104,16 @@ func appAction(c *cli.Context) error {
 func main() {
 	app := &cli.App{
 		Name:    "Addon Deployer",
-		Version: "v1.0.0",
+		Version: "v2.0.0",
 
 		Flags: []cli.Flag{
 			&cli.StringFlag{
-				Name:    "inputRootDir",
+				Name:    "input-root-dirname",
 				Aliases: []string{"i"},
 				Usage:   "Input root directory",
 			},
 			&cli.StringFlag{
-				Name:    "outputRootDir",
+				Name:    "output-root-dirname",
 				Aliases: []string{"o"},
 				Usage:   "Output root directory",
 			},

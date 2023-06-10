@@ -1,4 +1,4 @@
-module github.com/dabasan/addon-deployer
+module github.com/maeda6uiui/addon-deployer
 
 go 1.15
 
